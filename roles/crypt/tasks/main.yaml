@@ -17,3 +17,20 @@
     cipher: "xchacha20,aes-adiantum-plain64"
     hash: sha256
     passphrase: "{{ crypt_passphrase }}"
+
+- name: Create filesystem on LUKS device
+  filesystem:
+    fstype: ext4
+    dev: /dev/mapper/crypt
+
+- name: Ensure the directory /data/ exists
+  file:
+    path: /data
+    state: directory
+
+- name: Mount crypt
+  mount:
+    path: /data
+    src: /dev/mapper/crypt
+    state: mounted
+    fstype: ext4
