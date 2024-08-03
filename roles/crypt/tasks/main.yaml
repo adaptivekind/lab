@@ -4,15 +4,16 @@
 - name: Create a new partiion for encrypted drive
   community.general.parted:
     device: /dev/sda
-    number: "{{ crypt.device_index }}"
+    number: "{{ crypt_device_index }}"
     state: present
     part_start: 90%
     part_end: 100%
 
 - name: Create and open LUKS encrypted device
   community.crypto.luks_device:
-    device: "/dev/sda{{ crypt.device_index }}"
+    device: "/dev/sda{{ crypt_device_index }}"
     state: opened
     name: crypt
     cipher: "xchacha20,aes-adiantum-plain64"
     hash: sha256
+    passphrase: "{{ crypt_passphrase }}"
