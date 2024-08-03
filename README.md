@@ -1,3 +1,3 @@
 # Ansible Collection - ianhomer.ansible_collection_lab
 
-Documentation for the collection.
+This is a collection of resources to build a lab environment.
