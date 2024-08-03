@@ -33,23 +33,12 @@
     mode: "700"
   become_user: git
 
-- name: Ensure /home/git/.ssh/authorized_keys exists
-  file:
-    path: /home/git/.ssh/authorized_keys
-    state: touch
+- name: Create authorized_keys file
+  template:
+    src: authorized_keys.j2
+    dest: /home/git/.ssh/authorized_keys
+    mode: 0600
   become_user: git
-
-- name: Ensure /home/git/.ssh/authorized_keys has correct permissions
-  file:
-    path: /home/git/.ssh/authorized_keys
-    state: file
-    mode: "600"
-  become_user: git
-
-# Add keys to this file by logging in as git user
-# Generate key with e.g. `ssh-keygen -t ed25519 -C "lab@adaptivekind.com" -f ~/.ssh/id_lab`
-# Add key to authorized_keys file prepending each entry with
-# no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty
 
 - name: Ensure the directory /data/git exists
   file:
