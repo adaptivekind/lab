@@ -1,3 +1,3 @@
-# Ansible Collection - ianhomer.ansible_collection_lab
+# Ansible Collection - ianhomer.lab
 
 This is a collection of resources to build a lab environment.
