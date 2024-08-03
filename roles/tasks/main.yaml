@@ -1,0 +1,70 @@
+# Set up git hosting service
+# https://git-scm.com/book/en/v2/Git-on-the-Server-Setting-Up-the-Server
+
+# Install acl package for so that become_user can use setfacl
+- name: Install acl and git
+  apt:
+    force_apt_get: yes
+    name:
+      - acl
+      - git
+    install_recommends: no
+
+- name: Ensure group "git" exists
+  group:
+    name: git
+    state: present
+
+- name: Add the "git" user
+  user:
+    name: git
+    comment: git
+    group: git
+
+- name: Enforce git shell for login to prevent log in with SSH keys
+  user:
+    name: git
+    shell: /usr/bin/git-shell
+
+- name: Ensure /home/git/.ssh exists with correct permissions
+  file:
+    path: /home/git/.ssh
+    state: directory
+    mode: "700"
+  become_user: git
+
+- name: Ensure /home/git/.ssh/authorized_keys exists
+  file:
+    path: /home/git/.ssh/authorized_keys
+    state: touch
+  become_user: git
+
+- name: Ensure /home/git/.ssh/authorized_keys has correct permissions
+  file:
+    path: /home/git/.ssh/authorized_keys
+    state: file
+    mode: "600"
+  become_user: git
+
+# Add keys to this file by logging in as git user
+# Generate key with e.g. `ssh-keygen -t ed25519 -C "lab@adaptivekind.com" -f ~/.ssh/id_lab`
+# Add key to authorized_keys file prepending each entry with
+# no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty
+
+- name: Ensure the directory /data/git exists
+  file:
+    path: /data/git
+    state: directory
+
+- name: Make git user own git directory
+  file:
+    path: /data/git
+    owner: git
+    group: git
+
+- name: Create git repositories
+  command: git init --bare /data/git/{{ item }}.git
+  args:
+    creates: /data/git/{{ item }}.git/HEAD
+  become_user: git
+  loop: "{{ git.repositories }}"
