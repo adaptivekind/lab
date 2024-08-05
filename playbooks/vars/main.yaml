@@ -1,0 +1,4 @@
+k3s_version: v1.30.2+k3s1
+extra_server_args: ""
+extra_agent_args: ""
+api_endpoint: "{{ hostvars[groups['server'][0]]['ansible_host'] | default(groups['server'][0]) }}"
