@@ -1,0 +1,77 @@
+- name: Add group "nfs"
+  group:
+    name: nfs
+    state: present
+    gid: 1004
+
+- name: Add user "nfs"
+  user:
+    name: nfs
+    comment: NFS
+    group: nfs
+    create_home: false
+    uid: 994
+    system: true
+
+- name: Creates NFS mount
+  file:
+    path: /mnt/nfsshare
+    state: directory
+    owner: nfs
+    group: nfs
+
+- find:
+    paths:
+      - /mnt/nfsshare
+    recurse: true
+    file_type: file
+  register: nfs_files
+
+- file:
+    path: "{{ item.path }}"
+    mode: 644
+  loop: "{{ nfs_files.files }}"
+  loop_control:
+    label: "{{ item.path }}"
+
+- find:
+    paths:
+      - /mnt/nfsshare
+    recurse: true
+    file_type: directory
+  register: nfs_directories
+
+- file:
+    path: "{{ item.path }}"
+    mode: 755
+  loop: "{{ nfs_directories.files }}"
+  loop_control:
+    label: "{{ item.path }}"
+
+- name: NFS exports file
+  lineinfile:
+    path: /etc/exports
+    state: present
+    line: "{{ item }}"
+    create: true
+  with_items:
+    - /mnt/nfsshare *(rw,all_squash,insecure,async,no_subtree_check,anonuid=998,anongid=1004)
+
+- name: Install NFS server package
+  apt:
+    pkg: nfs-kernel-server
+    state: present
+    update_cache: yes
+
+- name: Restart NFS service
+  systemd:
+    daemon_reload: yes
+    state: started
+    name: nfs-kernel-server.service
+
+- name: Export the share
+  command: exportfs -ra
+
+# Test
+#   mkdir ~/tmp/mount-nfs
+#   mount -o nolocks -t nfs home:/mnt/nfsshare ~/tmp/mount-nfs/

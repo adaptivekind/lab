@@ -1,0 +1,10 @@
+{
+  # Certificates auto generated and written to 
+  # /var/lib/caddy/.local/share/caddy
+  acme_dns cloudflare {{ cloudflare_api_key }}
+}
+
+https://pihole.purplepip.com {
+  reverse_proxy 127.0.0.1:8080
+  redir / /admin/ 302
+}

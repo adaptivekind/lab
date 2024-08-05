@@ -1,0 +1,66 @@
+- name: Add Cloudsmith apt key
+  apt_key:
+    url: https://dl.cloudsmith.io/public/caddy/stable/gpg.key
+    state: present
+    # The id can be retrieved from
+    #    curl https://dl.cloudsmith.io/public/caddy/stable/gpg.key | gpg
+    id: 65760C51EDEA2017CEA2CA15155B6D79CA56EA34
+
+- name: Add xcaddy apt repository
+  apt_repository:
+    repo: deb https://dl.cloudsmith.io/public/caddy/xcaddy/deb/debian any-version main
+    state: present
+    filename: xcaddy-stable
+
+# As per https://caddyserver.com/docs/build#xcaddy install the caddy package to
+# start with to get the systemd service files amongst others
+- name: Install caddy
+  apt:
+    update_cache: yes
+    name: caddy
+    state: present
+
+- name: Install xcaddy
+  apt:
+    update_cache: yes
+    name: xcaddy
+    state: present
+
+- name: Build Caddy
+  command: |
+    xcaddy build --with github.com/caddy-dns/cloudflare --output /home/admin/tmp/caddy
+  environment:
+    PATH: "/usr/local/go/bin:{{ ansible_env.PATH }}"
+  args:
+    creates: /home/admin/tmp/caddy
+
+- name: Divert default caddy to make way for custom one
+  command: dpkg-divert --divert /usr/bin/caddy.default --rename /usr/bin/caddy
+  args:
+    creates: /usr/bin/caddy.default
+
+- name: Copy Caddy binary into place
+  copy:
+    src: /home/admin/tmp/caddy
+    remote_src: true
+    dest: /usr/bin/caddy.custom
+    force: false
+    mode: a+x
+
+- name: Update caddy alternative to custom
+  command: update-alternatives --install /usr/bin/caddy caddy /usr/bin/caddy.custom 50
+  args:
+    creates: /usr/bin/caddy
+
+- name: Copy Caddyfile into place
+  template:
+    src: Caddyfile.j2
+    dest: /etc/caddy/Caddyfile
+    mode: 0644
+  notify: reload Caddy
+
+- name: Enable Caddy service
+  service:
+    name: caddy
+    enabled: yes
+    state: started

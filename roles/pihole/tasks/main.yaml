@@ -1,0 +1,24 @@
+- name: Start pihole container
+  docker_container:
+    image: pihole/pihole:latest
+    name: pihole
+    ports:
+      - "8080:80/tcp"
+      - "53:53/tcp"
+      - "53:53/udp"
+    pull: yes
+    restart_policy: unless-stopped
+
+- name: Health check pihole
+  uri:
+    url: http://localhost:8080/admin
+  register: result
+  until: result.status == 200
+  retries: 3
+  delay: 5
+
+- name: Docker prune
+  docker_prune:
+    images: yes
+    images_filters:
+      dangling: false

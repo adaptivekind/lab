@@ -1,0 +1,25 @@
+- name: Initialize lab
+  hosts: all
+  become: yes
+  serial: 1
+  collections:
+    - ianhomer.lab
+  roles:
+    - role: crypt
+      tags: crypt
+    - role: git
+      tags: git
+    - role: go
+      tags: go
+    - role: caddy
+      tags: caddy
+    - role: docker
+      tags: docker
+    - role: pihole
+      tags: pihole
+    - role: nfs
+      tags: nfs
+
+- name: k3s
+  tags: k3s
+  import_playbook: k3s.orchestration.site
