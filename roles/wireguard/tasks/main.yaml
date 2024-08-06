@@ -15,6 +15,32 @@
     src: /etc/wireguard/server.key
   register: server_key
 
+- name: Create keys for each client
+  shell: "wg genkey | tee {{ item }}.key | wg pubkey > {{ item }}.pub"
+  args:
+    chdir: /etc/wireguard
+    creates: "/etc/wireguard/{{ item }}.pub"
+  loop: "{{ vpn_client_names }}"
+
+- name: Create PSK keys for each client
+  shell: "wg genpsk > {{ item }}.psk"
+  args:
+    chdir: /etc/wireguard
+    creates: "/etc/wireguard/{{ item }}.psk"
+  loop: "{{ vpn_client_names }}"
+
+- name: Slurp client public key
+  slurp:
+    src: /etc/wireguard/{{ item }}.pub
+  register: vpn_client_public_keys
+  loop: "{{ vpn_client_names }}"
+
+- name: Slurp client preshared keys
+  slurp:
+    src: /etc/wireguard/{{ item }}.psk
+  register: vpn_client_preshared_keys
+  loop: "{{ vpn_client_names }}"
+
 - name: Create wireguard configuration
   template:
     src: wg0.conf.j2

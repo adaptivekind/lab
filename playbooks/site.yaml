@@ -22,6 +22,6 @@
     - role: wireguard
       tags: vpn
 
-- name: k3s
+- import_playbook: k3s.orchestration.site
+  when: k3s_tag is defined
   tags: k3s
-  import_playbook: k3s.orchestration.site
