@@ -1,0 +1,21 @@
+- name: Install wireguard
+  apt:
+    name:
+      - wireguard
+      - wireguard-tools
+
+- name: Generate keypair
+  shell: "wg genkey | tee server.key | wg pubkey > server.pub"
+  args:
+    chdir: /etc/wireguard
+    creates: /etc/wireguard/server.pub
+
+- name: Slurp server.key
+  slurp:
+    src: /etc/wireguard/server.key
+  register: server_key
+
+- name: Create wireguard configuration
+  template:
+    src: wg0.conf.j2
+    dest: /etc/wireguard/wg0.conf

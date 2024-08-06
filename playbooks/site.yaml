@@ -19,6 +19,8 @@
       tags: pihole
     - role: nfs
       tags: nfs
+    - role: wireguard
+      tags: vpn
 
 - name: k3s
   tags: k3s
