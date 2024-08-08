@@ -1,11 +1,13 @@
 [Interface]
 Address = 10.100.0.2/32, fd08:4711::2/128
+# DNS server hosted on same machine as WireGuard
 DNS = {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}
 PrivateKey = {{ wireguard_client_private_key }} 
 
 [Peer]
-AllowedIPs = 10.100.0.1/32, fd08:4711::1/128
-Endpoint = angus:47111
+# Allow access to local network
+AllowedIPs = 192.168.178.0/24, 10.100.0.1/32, fd08:4711::1/128
+Endpoint = {{ public_ip }}:47111
 PersistentKeepalive = 25
 PublicKey = {{ server_public_key['content'] | b64decode }}
 PresharedKey = {{ wireguard_client_preshared_key }}
