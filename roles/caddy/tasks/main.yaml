@@ -57,7 +57,12 @@
     src: Caddyfile.j2
     dest: /etc/caddy/Caddyfile
     mode: 0644
-  notify: reload Caddy
+  notify: Reload Caddy
+
+- name: Ensure /etc/caddy/sites-enabled exists
+  file:
+    path: /etc/caddy/sites-enabled/
+    state: directory
 
 - name: Enable Caddy service
   service:

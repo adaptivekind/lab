@@ -22,3 +22,7 @@
     images: yes
     images_filters:
       dangling: false
+
+- copy:
+    src: pihole.caddy
+    dest: /etc/caddy/sites-enabled/
