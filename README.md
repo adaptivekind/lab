@@ -6,6 +6,7 @@ Collection of resources to build my lab environment.  Bootstrapped stack is esse
 - Pi-hole for DNS resolution and ad blocking
 - WireGuard for VPN
 - Git repository hosting
+- NFS
 - k3s for kubernetes stack and running on most workloads. 
 
 GitOps CD with ArgoCD manages the workload on the k8s stack, i.e. not Ansible
