@@ -1,6 +1,15 @@
 # Ansible Collection - ianhomer.lab
 
-Collection of resources to build my lab environment.
+Collection of resources to build my lab environment.  Bootstrapped stack is essentially
+
+- Caddy for front door routing and SSL certificate generation
+- Pi-hole for DNS resolution and ad blocking
+- WireGuard for VPN
+- Git repository hosting
+- k3s for kubernetes stack and running on most workloads. 
+
+GitOps CD with ArgoCD manages the workload on the k8s stack, i.e. not Ansible
+responsibility.
 
 ## Using
 
