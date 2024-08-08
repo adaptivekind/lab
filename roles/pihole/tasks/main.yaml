@@ -1,27 +1,30 @@
-- name: Start pihole container
-  docker_container:
-    image: pihole/pihole:latest
-    name: pihole
-    ports:
-      - "8080:80/tcp"
-      - "53:53/tcp"
-      - "53:53/udp"
-    pull: yes
-    restart_policy: unless-stopped
+- name: Ensure directory "/etc/pihole" exists
+  file:
+    path: /etc/pihole/
+    state: directory
 
-- name: Health check pihole
-  uri:
-    url: http://localhost:8080/admin
-  register: result
-  until: result.status == 200
-  retries: 3
-  delay: 5
+- name: Set up pi-hole variables
+  template:
+    src: setupVars.conf.j2
+    dest: /etc/pihole/setupVars.conf
 
-- name: Docker prune
-  docker_prune:
-    images: yes
-    images_filters:
-      dangling: false
+- name: Set up custom DNS list
+  template:
+    src: custom.list.j2
+    dest: /etc/pihole/custom.list
+  notify: Restart DNS
+
+- name: Install pihole
+  shell: "curl -sSL https://install.pi-hole.net | bash /dev/stdin --unattended"
+  args:
+    creates: /usr/local/bin/pihole
+
+- name: Set lighttpd port to 8080
+  lineinfile:
+    path: /etc/lighttpd/lighttpd.conf
+    regexp: '^server.port'
+    line: 'server.port                 = 8080'
+  notify: Reload Lighttpd
 
 - copy:
     src: pihole.caddy

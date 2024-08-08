@@ -1,0 +1,10 @@
+- name: Reload Lighttpd
+  service:
+    name: lighttpd
+    state: reloaded
+
+- name: Repair pi-hole
+  shell: pihole -r
+
+- name: Restart DNS
+  shell: pihole restartdns
