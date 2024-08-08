@@ -1,0 +1,7 @@
+- name: Restart WireGuard
+  service:
+    name: wg-quick@wg0
+    state: restarted
+
+- name: Reload WireGuard
+  shell: "wg syncconf wg0 <(wg-quick strip wg0)"

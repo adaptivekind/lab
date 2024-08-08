@@ -1,8 +1,9 @@
-- name: Install wireguard
+- name: Install WireGuard and dependents
   apt:
     name:
       - wireguard
       - wireguard-tools
+      - qrencode
 
 - name: Generate keypair
   shell: "wg genkey | tee server.key | wg pubkey > server.pub"
@@ -15,33 +16,69 @@
     src: /etc/wireguard/server.key
   register: server_key
 
+- name: Slurp server.key
+  slurp:
+    src: /etc/wireguard/server.pub
+  register: server_public_key
+
+- name: Ensure directory "/etc/wireguard/clients" exists
+  file:
+    path: /etc/wireguard/clients
+    state: directory
+
 - name: Create keys for each client
   shell: "wg genkey | tee {{ item }}.key | wg pubkey > {{ item }}.pub"
   args:
-    chdir: /etc/wireguard
-    creates: "/etc/wireguard/{{ item }}.pub"
+    chdir: /etc/wireguard/clients
+    creates: "/etc/wireguard/clients/{{ item }}.pub"
   loop: "{{ vpn_client_names }}"
 
 - name: Create PSK keys for each client
   shell: "wg genpsk > {{ item }}.psk"
   args:
-    chdir: /etc/wireguard
-    creates: "/etc/wireguard/{{ item }}.psk"
+    chdir: /etc/wireguard/clients
+    creates: "/etc/wireguard/clients/{{ item }}.psk"
   loop: "{{ vpn_client_names }}"
 
 - name: Slurp client public key
   slurp:
-    src: /etc/wireguard/{{ item }}.pub
+    src: /etc/wireguard/clients/{{ item }}.pub
   register: vpn_client_public_keys
   loop: "{{ vpn_client_names }}"
 
 - name: Slurp client preshared keys
   slurp:
-    src: /etc/wireguard/{{ item }}.psk
+    src: /etc/wireguard/clients/{{ item }}.psk
   register: vpn_client_preshared_keys
   loop: "{{ vpn_client_names }}"
 
-- name: Create wireguard configuration
+- name: Slurp clientkeys
+  slurp:
+    src: /etc/wireguard/clients/{{ item }}.key
+  register: vpn_client_keys
+  loop: "{{ vpn_client_names }}"
+
+- name: Start WireGuard if not started
+  service:
+    name: wg-quick@wg0
+    state: started
+    enabled: yes
+
+- name: Create WireGuard configuration
   template:
     src: wg0.conf.j2
     dest: /etc/wireguard/wg0.conf
+  notify: Reload WireGuard
+
+- name: Create client configurations
+  template:
+    src: client.conf.j2
+    dest: /etc/wireguard/clients/{{ item }}.conf
+  vars:
+    wireguard_client_private_key: "{{ vpn_client_keys['results'][loop_index - 1]['content'] | b64decode }}"
+    wireguard_client_preshared_key: "{{ vpn_client_preshared_keys['results'][loop_index - 1]['content'] | b64decode }}"
+  loop: "{{ vpn_client_names }}"
+  loop_control:
+    index_var: loop_index
+# Generate qrcode for connection
+# qrencode -t ansiutf8 < clients/ian.conf
