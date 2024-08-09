@@ -1,16 +1,21 @@
 - copy:
     src: helm.gpg
     dest: /usr/share/keyrings/helm.gpg
+  become: true
 
 - name: Add Docker apt repository
   apt_repository:
     repo: deb [arch=arm64 signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main
     state: present
     update_cache: yes
+  become: true
 
 - name: Install helm
   apt:
-    name: helm
+    name:
+      - helm
+      - pip
+  become: true
 
 - name: Add ArgoCD repository
   shell: helm repo add argo https://argoproj.github.io/argo-helm
@@ -36,7 +41,7 @@
   k8s:
     state: present
     definition:
-      apiVersion: traefik.containo.us/v1alpha1
+      apiVersion: traefik.io/v1alpha1
       kind: IngressRouteTCP
       metadata:
         name: argocd-route
@@ -51,3 +56,69 @@
                 port: 443
         tls:
           passthrough: true
+
+- name: Create web route to ArgoCD
+  k8s:
+    state: present
+    definition:
+      apiVersion: traefik.io/v1alpha1
+      kind: IngressRoute
+      metadata:
+        name: argocd-web-route
+        namespace: argocd
+      spec:
+        entryPoints:
+          - web
+        routes:
+          - match: Host(`argocd.{{ lab_domain }}`)
+            kind: Rule
+            services:
+              - name: argocd-server
+                namespace: argocd
+
+- name: Create traefik dashboard service
+  k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: traefik-dashboard
+        namespace: kube-system
+        labels:
+          app.kubernetes.io/instance: traefik
+          app.kubernetes.io/name: traefik-dashboard
+      spec:
+        type: ClusterIP
+        ports:
+          - name: traefik
+            port: 9000
+            targetPort: traefik
+            protocol: TCP
+        selector:
+          app.kubernetes.io/instance: traefik-kube-system
+          app.kubernetes.io/name: traefik
+
+- name: Create web route to traefik dashboard
+  k8s:
+    state: present
+    definition:
+      apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      metadata:
+        name: traefik-ingress
+        namespace: kube-system
+        annotations:
+          spec.ingressClassName: traefik
+      spec:
+        rules:
+          - host: traefik.{{ lab_domain }}
+            http:
+              paths:
+                - path: /
+                  pathType: Prefix
+                  backend:
+                    service:
+                      name: traefik-dashboard
+                      port:
+                        number: 9000

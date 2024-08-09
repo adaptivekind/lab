@@ -7,7 +7,7 @@
   collections:
     - ianhomer.lab
   roles:
-    # - role: cluster
-    #   tags: cluster
+    - role: cluster_context
+      tags: cluster_context
     - role: argocd
       tags: argocd

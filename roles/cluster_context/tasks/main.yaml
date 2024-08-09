@@ -3,9 +3,11 @@
     path: /etc/rancher/k3s/k3s.yaml
     regexp: 'server: https://127.0.0.1:6443'
     line: "    server: https://{{ inventory_hostname }}:6443"
+  become: true
 
 - name: Get k3s context
   fetch:
     src: /etc/rancher/k3s/k3s.yaml
     dest: ~/.kube/config
     flat: true
+  become: true

@@ -1,4 +1,11 @@
-- copy:
+- name: Register ArgoCD service
+  copy:
     src: argocd.caddy
+    dest: /etc/caddy/sites-enabled/
+  notify: Reload Caddy
+
+- name: Register Traefik service
+  copy:
+    src: traefik.caddy
     dest: /etc/caddy/sites-enabled/
   notify: Reload Caddy

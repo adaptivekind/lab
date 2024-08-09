@@ -1,5 +1,5 @@
 - name: Initialize lab
-  hosts: home
+  hosts: controller
   become: yes
   serial: 1
   collections:
