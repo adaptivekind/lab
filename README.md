@@ -63,9 +63,13 @@ k3s_cluster:
 
 ## Run playbook with
 
-Run with
+Run site playbook with
 
     ansible-playbook -i inventory.yaml ianhomer.lab.site
+
+Run cluster playbook with
+
+    ansible-playbook -i inventory.yaml ianhomer.lab.cluster
 
 Run just one role
 

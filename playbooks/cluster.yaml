@@ -1,1 +1,13 @@
 - import_playbook: k3s.orchestration.site
+  tags: k3s
+
+- name: Initialize lab
+  hosts: server
+  serial: 1
+  collections:
+    - ianhomer.lab
+  roles:
+    # - role: cluster
+    #   tags: cluster
+    - role: argocd
+      tags: argocd
