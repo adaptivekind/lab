@@ -1,4 +1,5 @@
 {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }} pihole.{{ lab_domain }} pihole
+{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }} argocd argocd.{{ lab_domain }}
 192.168.178.95 angus
 192.168.178.72 devon
 192.168.178.1 fritz.box

@@ -29,3 +29,4 @@
 - copy:
     src: pihole.caddy
     dest: /etc/caddy/sites-enabled/
+  notify: Reload Caddy

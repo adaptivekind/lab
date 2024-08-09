@@ -1,5 +1,5 @@
 - name: Initialize lab
-  hosts: all
+  hosts: home
   become: yes
   serial: 1
   collections:
@@ -21,3 +21,5 @@
       tags: nfs
     - role: wireguard
       tags: vpn
+    - role: services
+      tags: services

@@ -18,5 +18,36 @@
 - name: Add ArgoCD repository
   shell: helm repo update
 
+- name: Install python dependencies
+  pip:
+    name:
+      - pyyaml
+      - kubernetes
+    break_system_packages: true
+
 - name: Deploy ArgoCD
-  shell: helm install argocd argo/argo-cd --namespace argocd --create-namespace
+  kubernetes.core.helm:
+    name: argocd
+    chart_ref: argo/argo-cd
+    release_namespace: argocd
+    create_namespace: true
+
+- name: Create route to ArgoCD
+  k8s:
+    state: present
+    definition:
+      apiVersion: traefik.containo.us/v1alpha1
+      kind: IngressRouteTCP
+      metadata:
+        name: argocd-route
+        namespace: argocd
+      spec:
+        entryPoints:
+          - websecure
+        routes:
+          - match: HostSNI(`argocd.{{ lab_domain }}`)
+            services:
+              - name: argocd-server
+                port: 443
+        tls:
+          passthrough: true

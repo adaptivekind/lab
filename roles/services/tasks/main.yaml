@@ -1,0 +1,4 @@
+- copy:
+    src: argocd.caddy
+    dest: /etc/caddy/sites-enabled/
+  notify: Reload Caddy
