@@ -1,3 +1,8 @@
 https://argocd.purplepip.com {
-  reverse_proxy 192.168.178.72:443
+  reverse_proxy 192.168.178.72:443 {
+    transport http {
+      tls_insecure_skip_verify
+      tls_server_name argocd.purplepip.com
+    }
+  }
 }

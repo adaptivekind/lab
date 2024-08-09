@@ -57,24 +57,23 @@
         tls:
           passthrough: true
 
-- name: Create web route to ArgoCD
-  k8s:
-    state: present
-    definition:
-      apiVersion: traefik.io/v1alpha1
-      kind: IngressRoute
-      metadata:
-        name: argocd-web-route
-        namespace: argocd
-      spec:
-        entryPoints:
-          - web
-        routes:
-          - match: Host(`argocd.{{ lab_domain }}`)
-            kind: Rule
-            services:
-              - name: argocd-server
-                namespace: argocd
+# - name: Create web route to ArgoCD
+#   k8s:
+#     state: present
+#     definition:
+#       apiVersion: traefik.io/v1alpha1
+#       kind: IngressRoute
+#       metadata:
+#         name: argocd-web-route
+#         namespace: argocd
+#       spec:
+#         routes:
+#           - match: Host(`argocd.{{ lab_domain }}`)
+#             kind: Rule
+#             services:
+#               - name: argocd-server
+#                 port: 80
+#                 namespace: argocd
 
 - name: Create traefik dashboard service
   k8s:
