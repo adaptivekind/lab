@@ -1,9 +1,9 @@
-- name: Initialize lab
-  hosts: controller
+- name: Initialize prime host
+  hosts: prime
   become: yes
   serial: 1
   collections:
-    - ianhomer.lab
+    - adaptivekind.lab
   roles:
     - role: crypt
       tags: crypt

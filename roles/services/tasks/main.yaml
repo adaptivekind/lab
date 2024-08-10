@@ -4,19 +4,19 @@
     creates: /etc/caddy/cluster.pem
 
 - name: Register ArgoCD service
-  copy:
-    src: argocd.caddy
-    dest: /etc/caddy/sites-enabled/
+  template:
+    src: argocd.caddy.j2
+    dest: /etc/caddy/sites-enabled/argocd.caddy
   notify: Reload Caddy
 
 - name: Register Traefik service
-  copy:
-    src: traefik.caddy
-    dest: /etc/caddy/sites-enabled/
+  template:
+    src: traefik.caddy.j2
+    dest: /etc/caddy/sites-enabled/traefik.caddy
   notify: Reload Caddy
 
 - name: Register Grafana service
-  copy:
-    src: grafana.caddy
-    dest: /etc/caddy/sites-enabled/
+  template:
+    src: grafana.caddy.j2
+    dest: /etc/caddy/sites-enabled/grafana.caddy
   notify: Reload Caddy

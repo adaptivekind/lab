@@ -5,7 +5,7 @@
   hosts: server
   serial: 1
   collections:
-    - ianhomer.lab
+    - adaptivekind.lab
   roles:
     - role: cluster_context
       tags: cluster_context

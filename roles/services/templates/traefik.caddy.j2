@@ -1,0 +1,5 @@
+https://traefik.{{ lab_domain }} {
+  reverse_proxy {{ groups['server'][0] }}:80
+  redir / /dashboard/ 302
+}
+
