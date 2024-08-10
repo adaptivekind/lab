@@ -1,5 +1,5 @@
 namespace: adaptivekind
-name: ansible_collection_lab
+name: lab
 version: 1.0.0
 readme: README.md
 
