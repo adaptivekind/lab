@@ -1,6 +1,6 @@
 # Ansible Collection - adaptivekind.lab
 
-Collection of resources to build my lab environment. This bootstraps a system with:
+Collection of resources to build a research lab environment. This bootstraps a system with:
 
 - Caddy for front door routing and SSL certificate generation
 - Pi-hole for DNS resolution and ad blocking
@@ -9,26 +9,12 @@ Collection of resources to build my lab environment. This bootstraps a system wi
 - NFS
 - k3s and ArgoCD referencing an app of apps repository to run other services
 
-## Collection Variables
+## Usage
 
-Key variables that probably need to customised
+Create an Ansible playbook repository that will use this collection. Useful to
+source control this repository, e.g. manage as a git repository.
 
-| Variable               | Default  | Purpose                                        |
-| ---------------------- | -------- | ---------------------------------------------- |
-| cloudflare_api_key     | none     | Domain verification for certificate generation |
-| crypt_passphrase       | none     | Passphrase for encrypted disk                  |
-| grafana_password       |          |                                                |
-| lab_domain             | `.local` | Domain naming and certificate generation       |
-| pihole_hashed_password |          |                                                |
-| token                  | none     |                                                |
-
-Other variables are documented in the specific roles where used.
-
-## Using
-
-Create an Ansible playbook repository that will use this collection.
-
-Create `roles/requirements.yaml` file, e.g
+Create `roles/requirements.yaml` file containing:
 
 ```yaml
 collections:
@@ -43,46 +29,50 @@ Install collection
 ansible-galaxy install -r roles/requirements.yaml
 ```
 
-Define the following secrets in an ansible-vault
-
-- `cloudflare_api_key` - api key DNS verification by let's encrypt and Caddy
-- `crypt_passphrase` - passphrase for encrypted drive
-- `token` - k3s cluster token
-
-You can encrypt such a vault with
-
-    ansible-vault encrypt ~/.ansible/secrets.yaml
-
-Add on a mac log in with
-
-    ~/.ansible/collections/ansible_collections/ianhomer/lab/scripts/login_ansible_vault.sh
-
 Crete `inventory.yaml`, e.g.
 
 ```yaml
-all:
+prime:
   hosts:
     angus:
   vars:
-    ansible_ssh_user: admin
-    ansible_python_interpreter: /usr/bin/python3.11
 k3s_cluster:
   children:
     server:
       hosts:
-        angus:
+        devon:
+    agent:
+      hosts:
+        sanga:
 ```
+
+## Collection Variables
+
+Key variables that probably need to customised are described below. Other variables are documented in the specific roles where used.
+
+| Variable               | Default  | Purpose                                        |
+| ---------------------- | -------- | ---------------------------------------------- |
+| cloudflare_api_key     | none     | Domain verification for certificate generation |
+| crypt_passphrase       | none     | Passphrase for encrypted disk                  |
+| grafana_password       |          |                                                |
+| lab_domain             | `.local` | Domain naming and certificate generation       |
+| pihole_hashed_password |          |                                                |
+| token                  | none     | k3s cluster token                              |
+
+Secrets can be managed in an [Ansible
+vault](https://docs.ansible.com/ansible/latest/vault_guide/index.html). See
+[./SECRETS.md](managing secrets) on how this can be set this up.
 
 ## Run playbook with
 
-Run site playbook with
+Run playbook with
 
-    ansible-playbook -i inventory.yaml ianhomer.lab.site
+    ansible-playbook -i inventory.yaml adaptivekind.lab.site
 
-Run cluster playbook with
+Run specific playbook, e.g. cluster install
 
-    ansible-playbook -i inventory.yaml ianhomer.lab.cluster
+    ansible-playbook -i inventory.yaml adaptivekind.lab.cluster
 
-Run just one role
+Or run just specifically tagged roles in a specific playbook
 
-    ansible-playbook -i inventory.yaml ianhomer.lab.site --tags docker
+    ansible-playbook -i inventory.yaml adaptivekind.lab.prime --tags pihole
