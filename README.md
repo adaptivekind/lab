@@ -9,6 +9,9 @@ Collection of resources to build a research lab environment. This bootstraps a s
 - NFS
 - k3s and ArgoCD referencing an app of apps repository to run other services
 
+An output of this is Kubernetes cluster with the ArgoCD driven from an [app of
+apps](https://github.com/adaptivekind/app-of-apps) repository.
+
 ## Usage
 
 Create an Ansible playbook repository that will use this collection. Useful to
