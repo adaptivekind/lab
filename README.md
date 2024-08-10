@@ -1,6 +1,6 @@
 # Ansible Collection - adaptivekind.lab
 
-Collection of resources to build a research lab environment. This bootstraps a system with:
+Collection of resources to build a research lab environment hosted by Raspberry Pis. This bootstraps a system with:
 
 - Caddy for front door routing and SSL certificate generation
 - Pi-hole for DNS resolution and ad blocking
