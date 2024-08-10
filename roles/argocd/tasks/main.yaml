@@ -15,12 +15,13 @@
     name:
       - helm
       - pip
+
   become: true
 
 - name: Add ArgoCD repository
   shell: helm repo add argo https://argoproj.github.io/argo-helm
 
-- name: Add ArgoCD repository
+- name: Helm update
   shell: helm repo update
 
 - name: Install python dependencies
@@ -121,3 +122,10 @@
                       name: traefik-dashboard
                       port:
                         number: 9000
+
+- name: Install argocd command
+  get_url:
+    url: https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-arm64
+    dest: /usr/local/bin/argocd
+    mode: "755"
+  become: true

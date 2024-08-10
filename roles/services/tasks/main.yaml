@@ -14,3 +14,9 @@
     src: traefik.caddy
     dest: /etc/caddy/sites-enabled/
   notify: Reload Caddy
+
+- name: Register Grafana service
+  copy:
+    src: grafana.caddy
+    dest: /etc/caddy/sites-enabled/
+  notify: Reload Caddy
