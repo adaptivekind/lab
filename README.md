@@ -18,7 +18,7 @@ Create `roles/requirements.yaml` file containing:
 
 ```yaml
 collections:
-  - name: git@github.com:ianhomer/lab.git
+  - name: git@github.com:adaptivekind/lab.git
     type: git
     version: main
 ```

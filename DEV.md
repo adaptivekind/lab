@@ -5,5 +5,6 @@ the git source repository.
 
     cd ~/.ansible/collections/ansible_collections/adaptivekind/lab
     git init
-    git remote add origin git@github.com:ianhomer/lab.git
-    git reset --hard origin/main
+    git remote add origin git@github.com:adaptivekind/lab.git
+    git checkout main
+    git pull
