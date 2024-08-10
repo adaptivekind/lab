@@ -15,3 +15,9 @@
     src: grafana.caddy.j2
     dest: /etc/caddy/sites-enabled/grafana.caddy
   notify: Reload Caddy
+
+- name: Register homepage service
+  template:
+    src: homepage.caddy.j2
+    dest: /etc/caddy/sites-enabled/homepage.caddy
+  notify: Reload Caddy
