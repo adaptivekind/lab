@@ -1,16 +1,28 @@
 # Ansible Collection - adaptivekind.lab
 
-Collection of resources to build my lab environment.  Bootstrapped stack is essentially
+Collection of resources to build my lab environment. This bootstraps a system with:
 
 - Caddy for front door routing and SSL certificate generation
 - Pi-hole for DNS resolution and ad blocking
 - WireGuard for VPN
 - Git repository hosting
 - NFS
-- k3s for kubernetes stack and running on most workloads. 
+- k3s and ArgoCD referencing an app of apps repository to run other services
 
-GitOps CD with ArgoCD manages the workload on the k8s stack, i.e. not Ansible
-responsibility.
+## Collection Variables
+
+Key variables that probably need to customised
+
+| Variable               | Default  | Purpose                                        |
+| ---------------------- | -------- | ---------------------------------------------- |
+| cloudflare_api_key     | none     | Domain verification for certificate generation |
+| crypt_passphrase       | none     | Passphrase for encrypted disk                  |
+| grafana_password       |          |                                                |
+| lab_domain             | `.local` | Domain naming and certificate generation       |
+| pihole_hashed_password |          |                                                |
+| token                  | none     |                                                |
+
+Other variables are documented in the specific roles where used.
 
 ## Using
 
