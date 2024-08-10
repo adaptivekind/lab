@@ -72,7 +72,7 @@
         source:
           repoURL: https://github.com/adaptivekind/app-of-apps.git
           targetRevision: HEAD
-          path: app-of-apps/lab
+          path: env/lab
         destination:
           server: https://kubernetes.default.svc
         syncPolicy:

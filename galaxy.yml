@@ -1,4 +1,4 @@
-namespace: ianhomer
+namespace: adaptivekind
 name: ansible_collection_lab
 version: 1.0.0
 readme: README.md
