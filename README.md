@@ -34,16 +34,16 @@ Crete `inventory.yaml`, e.g.
 ```yaml
 prime:
   hosts:
-    angus:
+    a1:
   vars:
 k3s_cluster:
   children:
     server:
       hosts:
-        devon:
+        a2:
     agent:
       hosts:
-        sanga:
+        a3:
 ```
 
 ## Collection Variables

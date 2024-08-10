@@ -1,8 +1,3 @@
-- name: Get cluster certificate pem
-  shell: "openssl s_client -showcerts -connect devon:443 </dev/null 2>/dev/null|openssl x509 -outform PEM > /etc/caddy/cluster.pem"
-  args:
-    creates: /etc/caddy/cluster.pem
-
 - name: Register ArgoCD service
   template:
     src: argocd.caddy.j2
