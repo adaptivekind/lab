@@ -1,0 +1,52 @@
+image:
+  repository: ghcr.io/gethomepage/homepage
+  tag: v0.9.5
+
+enableRbac: true
+serviceAccount:
+  name: homepage
+  create: true
+
+config:
+  services:
+    - Core:
+        - "Pi-Hole":
+            href: "https://pihole.{{ lab_domain }}/"
+            description: Pi-Hole
+        - Traefik:
+            href: "https://traefik.{{ lab_domain }}/"
+            description: Traefik Ingress
+            widget:
+              type: traefik
+              url: "http://traefik.{{ lab_domain }}"
+        - Grafana:
+            href: "https://grafana.{{ lab_domain }}/"
+            description: Grafana
+  kubernetes:
+    mode: cluster
+  bookmarks: []
+  widgets:
+    - resources:
+        label: System
+        cpu: true
+        memory: true
+        cputemp: true
+        uptime: true
+        disk: /
+    # - longhorn:
+    #     expanded: true
+    #     total: true
+    #     labels: true
+    #     nodes: true
+    - kubernetes:
+        cluster:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+          label: "cluster"
+        nodes:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true

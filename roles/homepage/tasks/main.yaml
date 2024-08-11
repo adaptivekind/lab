@@ -1,0 +1,29 @@
+- name: Add homepage repository
+  kubernetes.core.helm_repository:
+    name: jameswynn
+    repo_url: https://jameswynn.github.io/helm-charts
+
+- name: Install homepage
+  kubernetes.core.helm:
+    name: homepage
+    chart_ref: jameswynn/homepage
+    release_namespace: homepage
+    create_namespace: true
+    values: "{{ lookup('template', 'homepage_values.yaml') | from_yaml }}"
+
+- name: Create route to homepage
+  k8s:
+    state: present
+    definition:
+      apiVersion: traefik.containo.us/v1alpha1
+      kind: IngressRoute
+      metadata:
+        name: homepage-route
+        namespace: homepage
+      spec:
+        routes:
+          - match: Headers("Service", "homepage")
+            kind: Rule
+            services:
+              - name: homepage
+                port: 3000

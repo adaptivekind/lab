@@ -7,9 +7,13 @@
   collections:
     - adaptivekind.lab
   roles:
+    - role: helm
+      tags: helm
     - role: cluster_context
       tags: cluster_context
     - role: argocd
       tags: argocd
     - role: app_of_apps
       tags: app_of_apps
+    - role: homepage
+      tags: homepage

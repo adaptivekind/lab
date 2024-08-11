@@ -1,23 +1,12 @@
-- name: Register ArgoCD service
+- name: Register services
   template:
-    src: argocd.caddy.j2
-    dest: /etc/caddy/sites-enabled/argocd.caddy
+    src: "{{ item }}.caddy.j2"
+    dest: "/etc/caddy/sites-enabled/{{ item }}.caddy"
   notify: Reload Caddy
+  loop: "{{ lab_services }}"
 
-- name: Register Traefik service
+- name: Set up custom DNS list
   template:
-    src: traefik.caddy.j2
-    dest: /etc/caddy/sites-enabled/traefik.caddy
-  notify: Reload Caddy
-
-- name: Register Grafana service
-  template:
-    src: grafana.caddy.j2
-    dest: /etc/caddy/sites-enabled/grafana.caddy
-  notify: Reload Caddy
-
-- name: Register homepage service
-  template:
-    src: homepage.caddy.j2
-    dest: /etc/caddy/sites-enabled/homepage.caddy
-  notify: Reload Caddy
+    src: custom.list.j2
+    dest: /etc/pihole/custom.list
+  notify: Restart DNS

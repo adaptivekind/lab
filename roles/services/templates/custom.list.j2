@@ -1,0 +1,9 @@
+{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }} pihole.{{ lab_domain }} pihole
+{% for name in lab_services %}
+{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }} {{ name }} {{ name }}.{{ lab_domain }}
+{% endfor %}
+
+{% for name, value in host_ips.items() %}
+{{ value }} {{ name }}
+{% endfor %}
+

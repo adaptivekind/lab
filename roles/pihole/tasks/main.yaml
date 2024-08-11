@@ -8,12 +8,6 @@
     src: setupVars.conf.j2
     dest: /etc/pihole/setupVars.conf
 
-- name: Set up custom DNS list
-  template:
-    src: custom.list.j2
-    dest: /etc/pihole/custom.list
-  notify: Restart DNS
-
 - name: Install pihole
   shell: "curl -sSL https://install.pi-hole.net | bash /dev/stdin --unattended"
   args:
@@ -22,8 +16,8 @@
 - name: Set lighttpd port to 8080
   lineinfile:
     path: /etc/lighttpd/lighttpd.conf
-    regexp: '^server.port'
-    line: 'server.port                 = 8080'
+    regexp: "^server.port"
+    line: "server.port                 = 8080"
   notify: Reload Lighttpd
 
 - template:
