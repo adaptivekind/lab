@@ -15,5 +15,7 @@
       tags: argocd
     - role: app_of_apps
       tags: app_of_apps
+    - role: prometheus
+      tags: prometheus
     - role: homepage
       tags: homepage
