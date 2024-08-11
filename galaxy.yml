@@ -21,7 +21,7 @@ tags: []
 # collection label 'namespace.name'. The value is a version range
 # L(specifiers,https://python-semanticversion.readthedocs.io/en/latest/#requirement-specification). Multiple version
 # range specifiers can be set and are separated by ','
-dependencies: {'git@github.com:k3s-io/k3s-ansible.git': 'master'}
+dependencies: {'git@github.com:k3s-io/k3s-ansible.git': 'master', 'git@github.com/prometheus-community/ansible.git': 'main'}
 
 repository: git@github.com:adaptivekind/lab.git
 documentation: https://github.com/adaptivekind/lab

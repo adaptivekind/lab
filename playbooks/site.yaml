@@ -1,2 +1,4 @@
+- import_playbook: all.yaml
 - import_playbook: prime.yaml
 - import_playbook: cluster.yaml
+
