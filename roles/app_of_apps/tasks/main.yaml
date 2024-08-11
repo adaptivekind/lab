@@ -1,16 +1,3 @@
-- name: Set grafana password
-  k8s:
-    state: present
-    definition:
-      apiVersion: v1
-      metadata:
-        name: grafana-password
-        namespace: monitoring
-      kind: Secret
-      stringData:
-        admin-user: admin
-        admin-password: "{{ grafana_password }}"
-
 - name: Register app-of-apps project
   k8s:
     state: present
@@ -78,3 +65,16 @@
         syncPolicy:
           automated:
             prune: true
+
+- name: Set grafana password
+  k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      metadata:
+        name: grafana-password
+        namespace: monitoring
+      kind: Secret
+      stringData:
+        admin-user: admin
+        admin-password: "{{ grafana_password }}"

@@ -79,3 +79,21 @@ Run specific playbook, e.g. cluster install
 Or run just specifically tagged roles in a specific playbook
 
     ansible-playbook -i inventory.yaml adaptivekind.lab.prime --tags pihole
+
+## Set Argo CD password
+
+To access the Argo CD console, the password need to be retrieved and preferably
+updated.
+
+```sh
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | 
+  base64 -d | pbcopy
+argocd login argocd.<use lab_domain value> --grpc-web
+argocd account update-password
+```
+
+## Troubleshooting
+
+Reset ArgoCD admin password
+
+<https://medium.com/@dulanjanalakmal/securing-argocd-a-step-by-step-guide-to-resetting-admin-passwords-bb5236208a64>
