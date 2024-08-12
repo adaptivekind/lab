@@ -1,5 +1,6 @@
 lab_services:
   - argocd
+  - dashboard
   - grafana
   - homepage
   - prometheus
