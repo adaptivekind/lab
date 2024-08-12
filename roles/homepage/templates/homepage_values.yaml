@@ -20,9 +20,12 @@ config:
         - Grafana:
             href: "https://grafana.{{ lab_domain }}/"
             description: Grafana
-        - Kubernetes:
+        - kubernetes:
             href: "https://kubernetes.{{ lab_domain }}/"
-            description: Kubernetes Dashboard
+            description: Kubernetes dashboard
+        - loki:
+            href: "https://loki.purplepip.com/config"
+            description: Loki Config
   kubernetes:
     mode: cluster
   bookmarks: []

@@ -2,6 +2,8 @@ lab_services:
   - argocd
   - grafana
   - homepage
+  - influxdb
   - kubernetes
+  - loki
   - prometheus
   - traefik
