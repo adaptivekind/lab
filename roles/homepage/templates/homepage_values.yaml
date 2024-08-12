@@ -9,19 +9,20 @@ serviceAccount:
 
 config:
   services:
-    - Core:
+    - Prime:
         - "Pi-Hole":
             href: "https://pihole.{{ lab_domain }}/"
             description: Pi-Hole
+    - Kube:
         - Traefik:
             href: "https://traefik.{{ lab_domain }}/"
-            description: Traefik Ingress
-            widget:
-              type: traefik
-              url: "http://traefik.{{ lab_domain }}"
+            description: Traefik Proxy
         - Grafana:
             href: "https://grafana.{{ lab_domain }}/"
             description: Grafana
+        - Kubernetes:
+            href: "https://kubernetes.{{ lab_domain }}/"
+            description: Kubernetes Dashboard
   kubernetes:
     mode: cluster
   bookmarks: []

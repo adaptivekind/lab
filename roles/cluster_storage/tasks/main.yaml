@@ -1,0 +1,30 @@
+- name: Create a new ext4 data partition
+  community.general.parted:
+    device: /dev/nvme0n1
+    number: 3
+    state: present
+    fs_type: ext4
+    part_start: 20%
+    part_end: 50%
+  become: true
+
+- name: Create data ext4 filesystem
+  filesystem:
+    fstype: ext4
+    dev: /dev/nvme0n1p3
+  become: true
+
+- name: Ensure /data exists
+  file:
+    path: /data
+    state: directory
+  become: true
+
+- name: Mount data filesystem
+  mount:
+    path: /data
+    src: /dev/nvme0n1p3
+    fstype: ext4
+    opts: noatime
+    state: mounted
+  become: true

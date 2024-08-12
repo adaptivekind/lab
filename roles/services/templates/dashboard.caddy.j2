@@ -1,9 +1,0 @@
-https://dashboard.{{ lab_domain }} {
-  reverse_proxy {{ groups['server'][0] }}:443 {
-    header_up Service "dashboard"
-    transport http {
-      tls_insecure_skip_verify
-      tls_server_name dashboard.{{ lab_domain }}
-    }
-  }
-}

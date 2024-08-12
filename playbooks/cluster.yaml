@@ -7,6 +7,8 @@
   collections:
     - adaptivekind.lab
   roles:
+    - role: cluster_storage
+      tags: storage
     - role: helm
       tags: helm
     - role: cluster_context

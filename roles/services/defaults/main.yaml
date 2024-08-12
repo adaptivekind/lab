@@ -1,7 +1,7 @@
 lab_services:
   - argocd
-  - dashboard
   - grafana
   - homepage
+  - kubernetes
   - prometheus
   - traefik
