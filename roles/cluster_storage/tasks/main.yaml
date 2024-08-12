@@ -28,3 +28,9 @@
     opts: noatime
     state: mounted
   become: true
+
+- name: Ensure /data/influxdb exists
+  file:
+    path: /data/influxdb
+    state: directory
+  become: true
