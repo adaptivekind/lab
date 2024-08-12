@@ -66,6 +66,17 @@
           automated:
             prune: true
 
+- name: Create monitoring namespace
+  k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: monitoring
+        labels:
+          name: monitoring
+
 - name: Set grafana password
   k8s:
     state: present
@@ -78,3 +89,27 @@
       stringData:
         admin-user: admin
         admin-password: "{{ grafana_password }}"
+
+- name: Create cert-manager namespace
+  k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: cert-manager
+        labels:
+          name: cert-manager
+
+- name: Set cloudflare API key
+  k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      metadata:
+        name: cloudflare-apikey
+        namespace: cert-manager
+      kind: Secret
+      stringData:
+        api_key: "{{ cloudflare_api_key }}"
+

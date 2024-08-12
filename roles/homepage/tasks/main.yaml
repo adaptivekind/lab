@@ -11,11 +11,28 @@
     create_namespace: true
     values: "{{ lookup('template', 'homepage_values.yaml') | from_yaml }}"
 
+- name: Create certificate for homepage
+  k8s:
+    state: present
+    definition:
+      apiVersion: cert-manager.io/v1
+      kind: Certificate
+      metadata:
+        name: homepage-domain-secret
+        namespace: homepage
+      spec:
+        secretName: homepage-domain-secret
+        issuerRef:
+          name: letsencrypt-issuer
+          kind: ClusterIssuer
+        dnsNames:
+          - "homepage.{{ lab_domain }}"
+
 - name: Create route to homepage
   k8s:
     state: present
     definition:
-      apiVersion: traefik.containo.us/v1alpha1
+      apiVersion: traefik.io/v1alpha1
       kind: IngressRoute
       metadata:
         name: homepage-route
@@ -27,3 +44,23 @@
             services:
               - name: homepage
                 port: 3000
+
+- name: Create TLS route to homepage
+  k8s:
+    state: present
+    definition:
+      apiVersion: traefik.io/v1alpha1
+      kind: IngressRouteTCP
+      metadata:
+        name: homepage-tls-route
+        namespace: homepage
+      spec:
+        entryPoints:
+          - websecure
+        routes:
+          - match: HostSNI(`homepage.{{ lab_domain }}`)
+            services:
+              - name: homepage
+                port: 3000
+        tls:
+          secretName: homepage-domain-secret
