@@ -1,0 +1,13 @@
+---
+- hosts: server, agent
+  gather_facts: no
+  tasks:
+    - community.general.shutdown:
+      become: yes
+    - name: wait for hosts to shutdown
+      wait_for:
+        port: 22
+        state: stopped
+      connection: local
+      vars:
+        ansible_python_interpreter: auto_silent
