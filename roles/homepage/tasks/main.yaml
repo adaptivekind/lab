@@ -22,7 +22,7 @@
         namespace: homepage
       spec:
         routes:
-          - match: Headers("Service", "homepage")
+          - match: HostRegexp(`homepage.{domain:[a-z\.]+}`)
             kind: Rule
             services:
               - name: homepage

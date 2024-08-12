@@ -1,6 +1,4 @@
 https://homepage.{{ lab_domain }} {
-  reverse_proxy {{ groups['server'][0] }}:80 {
-    header_up Service "homepage"
-  }
+  reverse_proxy {{ groups['server'][0] }}:80
 }
 

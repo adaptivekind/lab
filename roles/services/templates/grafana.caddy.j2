@@ -1,6 +1,4 @@
 https://grafana.{{ lab_domain }} {
-  reverse_proxy {{ groups['server'][0] }}:80 {
-    header_up Service "grafana"
-  }
+  reverse_proxy {{ groups['server'][0] }}:80
 }
 
