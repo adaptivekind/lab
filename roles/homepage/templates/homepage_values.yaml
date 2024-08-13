@@ -27,8 +27,8 @@ config:
             href: "https://loki.purplepip.com/config"
             description: Loki Config
         - prometheus:
-            href: "https://prometheus.purplepip.com/service-discovery"
-            description: Prometheus service discovery
+            href: "https://prometheus.purplepip.com/"
+            description: Prometheus dashboard
   kubernetes:
     mode: cluster
   bookmarks: []
