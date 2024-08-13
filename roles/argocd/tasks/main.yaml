@@ -17,6 +17,13 @@
     chart_ref: argo/argo-cd
     release_namespace: argocd
     create_namespace: true
+    values:
+      controller:
+        metrics:
+          enabled: true
+      server:
+        metrics:
+          enabled: true
 
 - name: Create route to ArgoCD
   k8s:
