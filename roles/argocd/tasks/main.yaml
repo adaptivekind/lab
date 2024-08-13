@@ -18,9 +18,12 @@
     release_namespace: argocd
     create_namespace: true
     values:
-      applicationset:
+      applicationSet:
         metrics:
           enabled: true
+          service:
+            labels:
+              "app.kubernetes.io/name" : "argocd-applicationset-controller-metrics"
       controller:
         metrics:
           enabled: true
@@ -30,6 +33,9 @@
       redis:
         metrics:
           enabled: true
+          service:
+            labels:
+              "app.kubernetes.io/name": "argocd-redis-metrics"
       repoServer:
         metrics:
           enabled: true
