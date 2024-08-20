@@ -5,5 +5,6 @@ lab_services:
   - influxdb
   - kubernetes
   - loki
+  - opentelemetry-demo
   - prometheus
   - traefik
