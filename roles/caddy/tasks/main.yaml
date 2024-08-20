@@ -64,6 +64,11 @@
     path: /etc/caddy/sites-enabled/
     state: directory
 
+- name: Ensure /etc/caddy/certs exists
+  file:
+    path: /etc/caddy/certs/
+    state: directory
+
 - name: Enable Caddy service
   service:
     name: caddy

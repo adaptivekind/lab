@@ -1,49 +1,5 @@
-- name: Register app-of-apps project
-  k8s:
-    state: present
-    definition:
-      apiVersion: argoproj.io/v1alpha1
-      kind: AppProject
-      metadata:
-        name: project-default
-        namespace: argocd
-        finalizers:
-          - resources-finalizer.argocd.argoproj.io
-      spec:
-        description: default project
-
-        sourceRepos:
-          - "*"
-
-        destinations:
-          - namespace: "*"
-            server: "*"
-
-        clusterResourceWhitelist:
-          - group: "*"
-            kind: "*"
-
 # Declarative set up (i.e. not with argocd command line)
 # https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/
-
-- name: Register app-of-apps repository
-  k8s:
-    state: present
-    definition:
-      apiVersion: v1
-      kind: Secret
-      metadata:
-        name: app-of-apps-repository
-        namespace: argocd
-        labels:
-          argocd.argoproj.io/secret-type: repository
-      stringData:
-        type: git
-        project: project-default
-        url: https://github.com/adaptivekind/app-of-apps.git
-        githubAppID: "{{ app_of_apps_github_app_id }}"
-        githubAppInstallationID: "{{ app_of_apps_github_installation_id }}"
-        githubAppPrivateKey: "{{ app_of_apps_github_private_key | b64decode }}"
 
 - name: Register app-of-apps application
   k8s:
@@ -52,10 +8,10 @@
       apiVersion: argoproj.io/v1alpha1
       kind: Application
       metadata:
-        name: app-of-app
+        name: lab
         namespace: argocd
       spec:
-        project: project-default
+        project: default
         source:
           repoURL: https://github.com/adaptivekind/app-of-apps.git
           targetRevision: HEAD
@@ -89,27 +45,3 @@
       stringData:
         admin-user: admin
         admin-password: "{{ grafana_password }}"
-
-- name: Create cert-manager namespace
-  k8s:
-    state: present
-    definition:
-      apiVersion: v1
-      kind: Namespace
-      metadata:
-        name: cert-manager
-        labels:
-          name: cert-manager
-
-- name: Set cloudflare API key
-  k8s:
-    state: present
-    definition:
-      apiVersion: v1
-      metadata:
-        name: cloudflare-apikey
-        namespace: cert-manager
-      kind: Secret
-      stringData:
-        api_key: "{{ cloudflare_api_key }}"
-
