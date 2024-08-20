@@ -1,7 +1,7 @@
-https://opentelementry-demo.{{ lab_domain }} {
+https://opentelemetry-demo.{{ lab_domain }} {
   reverse_proxy {{ groups['server'][0] }}:443 {
     transport http {
-      tls_server_name opentelementry-demo.local
+      tls_server_name opentelemetry-demo.local
       tls_trusted_ca_certs /etc/caddy/certs/cluster-ca.crt
     }
   }
