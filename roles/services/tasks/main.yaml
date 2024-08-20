@@ -15,9 +15,6 @@
   set_fact:
     root_secret: "{{ lookup('k8s', kind='Secret', namespace='cert-manager', resource_name='root-secret') }}"
 
-- debug:
-    msg: "{{ root_secret.data['ca.crt'] }}"
-
 - copy:
     content="{{ root_secret.data['ca.crt'] | b64decode }}"
     dest=/etc/caddy/certs/cluster-ca.crt
