@@ -15,9 +15,13 @@
   kubernetes.core.helm:
     name: argocd
     chart_ref: argo/argo-cd
+    chart_version: 7.6.8
     release_namespace: argocd
     create_namespace: true
     values:
+      configs:
+        cm:
+          timeout.reconciliation: 1800s
       applicationSet:
         metrics:
           enabled: true
