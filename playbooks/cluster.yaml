@@ -12,7 +12,7 @@
     - role: helm
       tags: helm
     - role: cluster_context
-      tags: cluster_context
+      tags: context
     - role: argocd
       tags: argocd
     - role: app_of_apps
