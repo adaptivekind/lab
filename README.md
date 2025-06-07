@@ -66,6 +66,10 @@ Secrets can be managed in an [Ansible
 vault](https://docs.ansible.com/ansible/latest/vault_guide/index.html). See
 [./SECRETS.md](managing secrets) on how this can be set this up.
 
+Cloudflare API token should have `Zone.Zone:Read` and `Zone.DNS:Edit`
+permissions for the lab domain. See [Cloudflare module for Caddy
+](https://github.com/caddy-dns/cloudflare)
+
 ## Run playbook with
 
 Run playbook with
