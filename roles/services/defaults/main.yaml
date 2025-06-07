@@ -8,3 +8,4 @@ lab_services:
   - opentelemetry-demo
   - prometheus
   - traefik
+lab_services_cluster_enabled: false

@@ -14,7 +14,9 @@
 - name: Get Cluster CA certificate
   set_fact:
     root_secret: "{{ lookup('k8s', kind='Secret', namespace='cert-manager', resource_name='root-secret') }}"
+  when: lab_services_cluster_enabled == "true"
 
 - copy:
     content="{{ root_secret.data['ca.crt'] | b64decode }}"
     dest=/etc/caddy/certs/cluster-ca.crt
+  when: lab_services_cluster_enabled == "true"
