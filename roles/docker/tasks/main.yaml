@@ -11,7 +11,9 @@
 
 - name: Add Docker apt repository
   apt_repository:
-    repo: deb [arch=arm64] https://download.docker.com/linux/raspbian {{ ansible_distribution_release }} stable
+    # Use debian not raspian for 64-bit docker images
+    # https://docs.docker.com/engine/install/debian/
+    repo: deb [arch=arm64] https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable
     state: present
     update_cache: yes
   notify: Update and upgrade apt packages
