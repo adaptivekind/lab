@@ -10,7 +10,7 @@
     comment: NFS
     group: nfs
     create_home: false
-    uid: 994
+    uid: 990
     system: true
 
 - name: Creates NFS mount
