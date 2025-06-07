@@ -10,7 +10,7 @@
     comment: NFS
     group: nfs
     create_home: false
-    uid: 990
+    uid: "{{ nfs_user_id }}"
     system: true
 
 - name: Creates NFS mount
@@ -55,7 +55,7 @@
     line: "{{ item }}"
     create: true
   with_items:
-    - /mnt/nfsshare *(rw,all_squash,insecure,async,no_subtree_check,anonuid=998,anongid=1004)
+    - /mnt/nfsshare *(rw,all_squash,insecure,async,no_subtree_check,anonuid={{ nfs_user_id }},anongid=1004)
 
 - name: Install NFS server package
   apt:
