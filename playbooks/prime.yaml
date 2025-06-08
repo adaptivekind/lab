@@ -15,8 +15,7 @@
       queue_config:
         max_backoff: "60s"
         sample_age_limit: "1h"
-      metadata_config:
-        max_samples_per_send: 500
+        max_samples_per_send: 5000
   roles:
     - role: crypt
       tags: crypt
