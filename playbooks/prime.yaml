@@ -12,6 +12,11 @@
       basic_auth:
         username: "{{ prometheus_write_username }}" # e.g. Grafana Instance ID
         password: "{{ prometheus_write_api_key }}"
+      queue_config:
+        max_backoff: "60s"
+        sample_age_limit: "1h"
+      metadata_config:
+        max_samples_per_send: 500
   roles:
     - role: crypt
       tags: crypt
@@ -21,7 +26,10 @@
       tags: go
     - role: caddy
       tags: caddy
-    - prometheus.prometheus.prometheus
+    - role: prometheus.prometheus.prometheus
+      tags: prometheus
+    - role: prometheus.prometheus.node_exporter
+      tags: prometheus
     - role: prometheus
       tags: prometheus
     - role: docker

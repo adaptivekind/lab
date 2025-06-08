@@ -4,3 +4,12 @@
     dest: /etc/caddy/sites-enabled/prometheus.caddy
   notify: Reload Caddy
 
+- name: Copy scrape config
+  copy:
+    src: scrape_config.yml
+    dest: "{{ prometheus_config_dir }}/scrape_configs"
+  become: true
+  notify:
+    - reload prometheus
+
+
