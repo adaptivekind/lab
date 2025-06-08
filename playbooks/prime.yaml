@@ -7,6 +7,8 @@
   vars:
     # Prometheus configuration - /etc/prometheus
     # https://github.com/prometheus-community/ansible/blob/main/roles/prometheus/defaults/main.yml
+    prometheus_global:
+      scrape_interval: 30s
     prometheus_remote_write:
     - url: https://{{ prometheus_remote_write_host }}/api/prom/push
       basic_auth:
