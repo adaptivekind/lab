@@ -1,19 +1,6 @@
-# View whether ScrapeConfig applied at
-# https://prometheus.<lab_domain>/api/v1/targets
-- name: Scrape configuration
-  k8s:
-    state: present
-    definition:
-      apiVersion: monitoring.coreos.com/v1alpha1
-      kind: ScrapeConfig
-      metadata:
-        name: exporter-angus
-        namespace: monitoring
-        labels:
-          prometheus: system-monitoring-prometheus
-      spec:
-        staticConfigs:
-          - targets:
-              - 192.168.178.95:9100
-            labels:
-              lab_source: prime
+- name: Register Prometheus service
+  template:
+    src: prometheus.caddy.j2
+    dest: /etc/caddy/sites-enabled/prometheus.caddy
+  notify: Reload Caddy
+

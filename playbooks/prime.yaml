@@ -4,6 +4,14 @@
   serial: 1
   collections:
     - adaptivekind.lab
+  vars:
+    # Prometheus configuration - /etc/prometheus
+    # https://github.com/prometheus-community/ansible/blob/main/roles/prometheus/defaults/main.yml
+    prometheus_remote_write:
+    - url: https://{{ prometheus_remote_write_host }}/api/prom/push
+      basic_auth:
+        username: "{{ prometheus_write_username }}"
+        password: "{{ prometheus_write_api_key }}"
   roles:
     - role: crypt
       tags: crypt
@@ -13,6 +21,9 @@
       tags: go
     - role: caddy
       tags: caddy
+    - prometheus.prometheus.prometheus
+    - role: prometheus
+      tags: prometheus
     - role: docker
       tags: docker
     - role: pihole
