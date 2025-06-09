@@ -53,3 +53,17 @@
     dest: /usr/local/bin/argocd
     mode: "755"
   become: true
+
+- name: Set argocd password
+  k8s:
+    state: present
+    merge_type: merge
+    definition:
+      apiVersion: v1
+      kind: Secret
+      data:
+        # password with htpasswd -bnBC 10 "" mypassword | tr -d ':\n'
+        admin.password: "{{ argocd_encoded_password | b64encode }}"
+      metadata:
+        namespace: argocd
+        name: argocd-secret
