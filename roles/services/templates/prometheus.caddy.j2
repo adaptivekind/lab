@@ -1,4 +1,4 @@
-https://prometheus-node-0.{{ lab_domain }} {
+https://prometheus.{{ lab_domain }} {
   reverse_proxy {{ groups['server'][0] }}:8443 {
     transport http {
       tls_server_name prometheus.local

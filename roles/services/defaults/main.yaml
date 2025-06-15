@@ -6,6 +6,6 @@ lab_services:
   - kubernetes
   - loki
   - opentelemetry-demo
-  - prometheus-node-0
+  - prometheus
   - traefik
 lab_services_cluster_enabled: false
