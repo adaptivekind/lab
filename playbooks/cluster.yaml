@@ -18,6 +18,6 @@
     - role: app_of_apps
       tags: app_of_apps
     - role: cluster_prometheus
-      tags: cluster_prometheus
+      tags: prometheus
     - role: homepage
       tags: homepage

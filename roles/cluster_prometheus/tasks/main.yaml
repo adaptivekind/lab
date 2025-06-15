@@ -17,3 +17,17 @@
               - 192.168.178.95:9100
             labels:
               lab_source: prime
+
+- name: Set grafana prometheus credentials
+  k8s:
+    state: present
+    merge_type: merge
+    definition:
+      apiVersion: v1
+      kind: Secret
+      data:
+        username: "{{ prometheus_write_username | b64encode }}" # e.g. Grafana Instance ID
+        password: "{{ prometheus_write_api_key | b64encode }}"
+      metadata:
+        namespace: monitoring
+        name: remote-prometheus-write-credentials
