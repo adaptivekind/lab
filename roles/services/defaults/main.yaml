@@ -7,5 +7,6 @@ lab_services:
   - loki
   - opentelemetry-demo
   - prometheus
+  - victoria-logs
   - traefik
 lab_services_cluster_enabled: false
