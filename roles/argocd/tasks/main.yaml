@@ -18,6 +18,9 @@
     chart_version: 8.0.17
     release_namespace: argocd
     create_namespace: true
+    values:
+      dex:
+        enabled: false
 
 - name: Install argocd command
   get_url:
