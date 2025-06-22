@@ -11,41 +11,13 @@
       - kubernetes
     break_system_packages: true
 
-# - name: Deploy ArgoCD
-#   kubernetes.core.helm:
-#     name: argocd
-#     chart_ref: argo/argo-cd
-#     chart_version: 8.0.17
-#     release_namespace: argocd
-#     create_namespace: true
-#     values:
-#       configs:
-#         cm:
-#           timeout.reconciliation: 1800s
-#       applicationSet:
-#         metrics:
-#           enabled: true
-#           service:
-#             labels:
-#               "app.kubernetes.io/name": "argocd-applicationset-controller-metrics"
-#       controller:
-#         metrics:
-#           enabled: true
-#       dex:
-#         metrics:
-#           enabled: true
-#       redis:
-#         metrics:
-#           enabled: true
-#           service:
-#             labels:
-#               "app.kubernetes.io/name": "argocd-redis-metrics"
-#       repoServer:
-#         metrics:
-#           enabled: true
-#       server:
-#         metrics:
-#           enabled: true
+- name: Deploy ArgoCD
+  kubernetes.core.helm:
+    name: argocd
+    chart_ref: argo/argo-cd
+    chart_version: 8.0.17
+    release_namespace: argocd
+    create_namespace: true
 
 - name: Install argocd command
   get_url:
