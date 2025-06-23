@@ -1,24 +1,24 @@
 # View whether ScrapeConfig applied at
 # https://prometheus.<lab_domain>/api/v1/targets
-- name: Scrape configuration
-  k8s:
-    state: present
-    definition:
-      apiVersion: monitoring.coreos.com/v1alpha1
-      kind: ScrapeConfig
-      metadata:
-        name: exporter-angus
-        namespace: monitoring
-        labels:
-          prometheus: system-monitoring-prometheus
-      spec:
-        staticConfigs:
-          - targets:
-              - 192.168.178.95:9100
-            labels:
-              lab_source: prime
+# - name: Scrape configuration
+#   k8s:
+#     state: present
+#     definition:
+#       apiVersion: monitoring.coreos.com/v1alpha1
+#       kind: ScrapeConfig
+#       metadata:
+#         name: exporter-angus
+#         namespace: monitoring
+#         labels:
+#           prometheus: system-monitoring-prometheus
+#       spec:
+#         staticConfigs:
+#           - targets:
+#               - 192.168.178.95:9100
+#             labels:
+#               lab_source: prime
 
-- name: Set grafana prometheus credentials
+- name: Set prometheus credentials
   k8s:
     state: present
     merge_type: merge
@@ -29,5 +29,5 @@
         username: "{{ prometheus_write_username | b64encode }}" # e.g. Grafana Instance ID
         password: "{{ prometheus_write_api_key | b64encode }}"
       metadata:
-        namespace: monitoring
+        namespace: prometheus
         name: remote-prometheus-write-credentials
