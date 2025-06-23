@@ -14,7 +14,7 @@
     - role: cluster_context
       tags: context
     - role: argocd
-      tags: apps
+      tags: argocd
     - role: app_of_apps
       tags: apps
     - role: cluster_prometheus

@@ -22,16 +22,16 @@
           automated:
             prune: true
 
-- name: Create monitoring namespace
+- name: Create grafana namespace
   k8s:
     state: present
     definition:
       apiVersion: v1
       kind: Namespace
       metadata:
-        name: monitoring
+        name: grafana
         labels:
-          name: monitoring
+          name: grafana
 
 - name: Set grafana password
   k8s:
@@ -40,7 +40,7 @@
       apiVersion: v1
       metadata:
         name: grafana-password
-        namespace: monitoring
+        namespace: grafana
       kind: Secret
       stringData:
         admin-user: admin
