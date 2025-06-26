@@ -18,6 +18,15 @@
 #             labels:
 #               lab_source: prime
 
+- name: Create otel namespace
+  k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: otel
+
 - name: Set prometheus credentials for otel
   k8s:
     state: present
@@ -29,8 +38,17 @@
         username: "{{ prometheus_write_username | b64encode }}" # e.g. Grafana Instance ID
         password: "{{ prometheus_write_api_key | b64encode }}"
       metadata:
-        namespace: opentelemetry
+        namespace: otel
         name: remote-prometheus-write-credentials
+
+- name: Create prometheus namespace
+  k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: prometheus
 
 - name: Set prometheus credentials
   k8s:
