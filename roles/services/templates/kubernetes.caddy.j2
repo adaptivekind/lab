@@ -1,5 +1,5 @@
 https://kubernetes.{{ lab_domain }} {
-  reverse_proxy {{ groups['server'][0] }}:8443 {
+  reverse_proxy {{ groups['server'][0] }}:443 {
     transport http {
       tls_insecure_skip_verify
       tls_server_name kubernetes.{{ lab_domain }}

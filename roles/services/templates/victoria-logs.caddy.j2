@@ -1,3 +1,3 @@
 https://victoria-logs.{{ lab_domain }} {
-  reverse_proxy {{ groups['server'][0] }}:8000
+  reverse_proxy {{ groups['server'][0] }}:80
 }

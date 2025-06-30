@@ -1,5 +1,5 @@
 https://grafana.{{ lab_domain }} {
-  reverse_proxy {{ groups['server'][0] }}:8443 {
+  reverse_proxy {{ groups['server'][0] }}:443 {
     transport http {
       tls_server_name grafana.local
       tls_trusted_ca_certs /etc/caddy/certs/cluster-ca.crt
