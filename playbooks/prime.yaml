@@ -2,25 +2,24 @@
   hosts: prime
   become: yes
   serial: 1
-  collections:
-    - adaptivekind.lab
   roles:
-    - role: crypt
+    - role: adaptivekind.lab.crypt
       tags: crypt
-    - role: git
+    - role: adaptivekind.lab.git
       tags: git
-    - role: go
+    - role: adaptivekind.lab.fileshare
+      tags: fileshare
+    - role: adaptivekind.lab.go
       tags: go
-    - role: caddy
+    - role: adaptivekind.lab.caddy
       tags: caddy
-    - role: docker
+    - role: adaptivekind.lab.docker
       tags: docker
-    - role: pihole
+    - role: adaptivekind.lab.pihole
       tags: pihole
-    - role: nfs
+    - role: adaptivekind.lab.nfs
       tags: nfs
-    - role: wireguard
+    - role: adaptivekind.lab.wireguard
       tags: vpn
-    - role: services
+    - role: adaptivekind.lab.services
       tags: services
-
