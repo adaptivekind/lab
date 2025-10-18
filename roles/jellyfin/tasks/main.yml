@@ -1,3 +1,37 @@
-- name: Print debug message
-  debug:
-    msg: Hello, world!
+- name: Ensure dependencies installed
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - gnupg
+
+- name: Add jellfin apt key
+  apt_key:
+    url: https://repo.jellyfin.org/debian/jellyfin_team.gpg.key
+    # The id can be retrieved from
+    #    curl https://repo.jellyfin.org/debian/jellyfin_team.gpg.key | gpg
+    id: 4918AABC486CA052358D778D49023CD01DE21A7B
+    state: present
+
+- name: Add Jellyfin apt repository
+  apt_repository:
+    # based on https://github.com/jellyfin/jellyfin-repo-helper-scripts/blob/master/install-debuntu.sh
+    repo: deb [arch=arm64] https://repo.jellyfin.org/debian {{ ansible_distribution_release | lower }} main
+    state: present
+  notify: Update and upgrade apt packages
+
+- name: Install Jellyfin
+  package:
+    name: jellyfin
+    state: present
+
+# Jellyfin should start on port 8096
+- name: Ensure the jellyfin service started
+  ansible.builtin.service:
+    name: jellyfin
+    state: started
+
+- name: Ensure the jellyfin is enabled
+  ansible.builtin.service:
+    name: jellyfin
+    enabled: yes
