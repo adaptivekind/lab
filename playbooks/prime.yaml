@@ -23,3 +23,5 @@
       tags: vpn
     - role: adaptivekind.lab.services
       tags: services
+    - role: adaptivekind.lab.jellyfin
+      tags: jellyfin
